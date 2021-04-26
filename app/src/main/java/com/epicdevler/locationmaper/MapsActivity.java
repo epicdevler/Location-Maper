@@ -85,12 +85,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
 
 
+//                CREATING A GEOCODER FOR GETTING AN ADDRESS FROM A GIVEN LATITUDE AND LONGITUDE
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
+//                MAKE A TRY AND CATCH FOR THE GEOCODER FOR ERROR HANDLINE
                 try {
                     List<Address> listAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (listAddress != null && listAddress.size() > 0) {
-                        Toast.makeText(MapsActivity.this, "Location: " + listAddress.get(0).toString(), Toast.LENGTH_SHORT).show();
+                        String address = "";
+
+                        if (listAddress.get(0).getThoroughfare() != null) {
+                            address += listAddress.get(0).getThoroughfare() + " ";
+                        }
+                        if (listAddress.get(0).getLocality() != null) {
+                            address += listAddress.get(0).getLocality() + " ";
+                        }
+                        if (listAddress.get(0).getPostalCode() != null) {
+                            address += listAddress.get(0).getPostalCode() + " ";
+                        }
+                        if (listAddress.get(0).getAdminArea() != null) {
+                            address += listAddress.get(0).getAdminArea() + " ";
+                        }
+
+                        Toast.makeText(MapsActivity.this, "" + address, Toast.LENGTH_LONG).show();
+
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
