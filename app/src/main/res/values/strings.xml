@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Location Maper</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
