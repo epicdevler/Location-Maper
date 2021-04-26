@@ -73,12 +73,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(@NonNull Location location) {
                 Toast.makeText(MapsActivity.this, "" + location.toString(), Toast.LENGTH_SHORT).show();
 
-                LatLng userLocatoin = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(userLocatoin).title("Marker in Sydney"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocatoin));
+                mMap.clear();
+                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(userLocation).title("Marker in Sydney"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
             }
         };
-
 //        CHECK FOR USERS PERMISSION AND HANDLE TRUE/FALSE REPORTS
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT < 23) {
@@ -88,8 +88,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 } else {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    mMap.clear();
+                    LatLng userLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(userLocation).title("Marker in Sydney"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
                 }
             }
         }
+
     }
 }
